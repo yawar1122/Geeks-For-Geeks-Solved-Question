@@ -8,30 +8,29 @@ using namespace std;
 
 class Solution {
   private:
-    void dfs(int n, int visited[], vector<int> adjList[]){
-        visited[n]=1;
-        
-        for(auto it : adjList[n]){
+    void dfs(int node, int visited[], vector<int> adjLs[]){
+        visited[node] = 1;
+        for(auto it:adjLs[node]){
             if(!visited[it]){
-                dfs(it,visited,adjList);
+                dfs(it,visited,adjLs);
             }
         }
     }
   public:
     int numProvinces(vector<vector<int>> adj, int V) {
         // code here
-        vector<int> adjList[V];
+        vector<int> adjLs[V];
         
-        
-        //converting Adjecency matrix in to Adjecency List 
+        //converting Adjecency matrix to Adjecency List
         for(int i=0;i<V;i++){
             for(int j=0;j<V;j++){
-                if(adj[i][j] == 1 && i != j){
-                    adjList[i].push_back(j);
-                    adjList[j].push_back(i);
+                if(adj[i][j]==1 && i != j){
+                    adjLs[i].push_back(j);
+                    adjLs[j].push_back(i);
                 }
             }
         }
+        
         
         int visited[V] = {0};
         int count = 0;
@@ -39,9 +38,10 @@ class Solution {
         for(int i=0;i<V;i++){
             if(!visited[i]){
                 count++;
-                dfs(i,visited,adjList);
+                dfs(i,visited,adjLs);
             }
         }
+        
         return count;
     }
 };

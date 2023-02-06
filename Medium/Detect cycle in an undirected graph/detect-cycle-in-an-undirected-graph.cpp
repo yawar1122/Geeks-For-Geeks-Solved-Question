@@ -5,28 +5,21 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   private:
-    bool detectLoop(int src, int visited[], vector<int> adj[]){
-        visited[src] = 1;
-        queue<pair<int,int>> q;
-        q.push({src,-1});
-        
-        while(!q.empty()){
-            int node = q.front().first;
-            int parent = q.front().second;
-            q.pop();
+    bool detectLoopUsingDfs(int node, int parent, int visited[], vector<int> adj[]){
+        visited[node] = 1;
+        for(auto adjecencyNode:adj[node]){
             
-            for(auto adjecencyNode: adj[node]){
-                if(!visited[adjecencyNode]){
-                    visited[adjecencyNode] = 1;
-                    q.push({adjecencyNode,node});
-                }
-                else if(parent != adjecencyNode){
+            if(!visited[adjecencyNode]){
+                
+                if(detectLoopUsingDfs(adjecencyNode,node,visited,adj) == true) 
+                {
                     return true;
                 }
             }
-            
+            else if(adjecencyNode != parent){
+                return true;
+            }
         }
-        
         return false;
     }
   public:
@@ -38,7 +31,7 @@ class Solution {
         
         for(int i=0;i<V;i++){
             if(!visited[i]){
-                if(detectLoop(i,visited,adj)) return true;
+                if(detectLoopUsingDfs(i,-1,visited,adj)== true) return true;
             }
         }
         
